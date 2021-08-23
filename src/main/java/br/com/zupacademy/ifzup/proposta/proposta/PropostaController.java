@@ -39,12 +39,11 @@ public class PropostaController {
 
         if (propostaRepository.existsByDocumento(request.getDocumento())) {
             return ResponseEntity.unprocessableEntity().body("tua mensagem");
-        } else {
+        }
             propostaRepository.save(proposta);
 
             URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
             return ResponseEntity.created(enderecoCadastro).build();
-        }
     }
 
 
