@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping
+@RequestMapping("/propostas")
 public class PropostaController {
 
 
@@ -24,7 +24,7 @@ public class PropostaController {
     @Autowired
     PropostaRepository propostaRepository;
 
-    @PostMapping("/proposta")
+    @PostMapping("/criar")
         public ResponseEntity<?> cadastrar(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder uriBuilder) {
         Proposta proposta = request.converter();
         propostaRepository.save(proposta);
