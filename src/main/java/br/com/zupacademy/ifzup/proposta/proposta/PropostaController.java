@@ -1,5 +1,10 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
+import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaRequest;
+import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaResponse;
+import br.com.zupacademy.ifzup.proposta.analise.AnalisaSolicitacaoClient;
+import br.com.zupacademy.ifzup.proposta.analise.Status;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +19,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/propostas")
+@RequestMapping("/api/propostas")
 public class PropostaController {
 
 
@@ -23,6 +28,9 @@ public class PropostaController {
 
     @Autowired
     PropostaRepository propostaRepository;
+
+    @Autowired
+    private AnalisaSolicitacaoClient analisaSolicitacaoClient;
 
     @PostMapping("/criar")
     public ResponseEntity<?> cadastrar(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder uriBuilder) {
@@ -33,6 +41,20 @@ public class PropostaController {
             return ResponseEntity.unprocessableEntity().body("tua mensagem");
         }
         propostaRepository.save(proposta);
+
+        try{
+            AnalisaPropostaRequest analiseRequest = new AnalisaPropostaRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId());
+
+            AnalisaPropostaResponse resultadoDaConsulta = analisaSolicitacaoClient.consulta(analiseRequest);
+            Status status=resultadoDaConsulta.status();
+
+            proposta.setStatus(status);
+        }catch (FeignException.UnprocessableEntity unprocessableEntity){
+
+            proposta.setStatus(Status.NAO_ELEGIVEL);
+        }catch(FeignException.ServiceUnavailable ex){
+            propostaRepository.delete(proposta);
+        }
 
         URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(enderecoCadastro).build();

@@ -1,5 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
+import br.com.zupacademy.ifzup.proposta.analise.Status;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -32,6 +34,9 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Deprecated
     public Proposta() {
     }
@@ -46,5 +51,29 @@ public class Proposta {
 
     public Long getId() {
         return this.id;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public void setStatus(Status status) {
+        this.status=status;
     }
 }
