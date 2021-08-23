@@ -16,7 +16,7 @@ public class PropostaRequest {
 
     @CpfOuCnpj
     @NotBlank
-    @UniqueValue(domainClass = Proposta.class, fieldName = "documento")
+    //@UniqueValue(domainClass = Proposta.class, fieldName = "documento")
     private String documento;
 
     @Email

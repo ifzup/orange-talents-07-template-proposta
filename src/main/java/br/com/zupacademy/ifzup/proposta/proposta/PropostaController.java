@@ -24,17 +24,27 @@ public class PropostaController {
     @Autowired
     PropostaRepository propostaRepository;
 
+   /* @PostMapping("/criar")
+    public ResponseEntity<?> cadastrar(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder uriBuilder) {
+        Proposta proposta = request.converter();
+            propostaRepository.save(proposta);
+            URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
+            return ResponseEntity.created(enderecoCadastro).build();
+    }*/
+
     @PostMapping("/criar")
         public ResponseEntity<?> cadastrar(@RequestBody @Valid PropostaRequest request, UriComponentsBuilder uriBuilder) {
         Proposta proposta = request.converter();
-        propostaRepository.save(proposta);
 
-        URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
 
-        if(propostaRepository.existsByDocumento(request.getDocumento())) {
+        if (propostaRepository.existsByDocumento(request.getDocumento())) {
             return ResponseEntity.unprocessableEntity().body("tua mensagem");
+        } else {
+            propostaRepository.save(proposta);
+
+            URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
+            return ResponseEntity.created(enderecoCadastro).build();
         }
-        return ResponseEntity.created(enderecoCadastro).build();
     }
 
 
