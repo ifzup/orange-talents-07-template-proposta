@@ -1,10 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.validator.CpfOuCnpj;
-import br.com.zupacademy.ifzup.proposta.validator.UniqueValue;
 
-import javax.persistence.Column;
-import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,7 +9,6 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class PropostaRequest {
-
 
     @CpfOuCnpj
     @NotBlank
@@ -43,7 +39,7 @@ public class PropostaRequest {
 
 
     public Proposta converter() {
-        return new Proposta(documento,email, nome, endereco, salario);
+        return new Proposta(documento, email, nome, endereco, salario);
     }
 
     public String getDocumento() {

@@ -1,7 +1,5 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
-import br.com.zupacademy.ifzup.proposta.validator.CpfOuCnpj;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
