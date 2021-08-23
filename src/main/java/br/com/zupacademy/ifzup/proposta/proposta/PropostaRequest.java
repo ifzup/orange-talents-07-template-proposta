@@ -1,6 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.validator.CpfOuCnpj;
+import br.com.zupacademy.ifzup.proposta.validator.UniqueValue;
 
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ public class PropostaRequest {
 
     @CpfOuCnpj
     @NotBlank
+    @UniqueValue(domainClass = Proposta.class, fieldName = "documento")
     private String documento;
 
     @Email
@@ -42,5 +44,9 @@ public class PropostaRequest {
 
     public Proposta converter() {
         return new Proposta(documento,email, nome, endereco, salario);
+    }
+
+    public String getDocumento() {
+        return documento;
     }
 }

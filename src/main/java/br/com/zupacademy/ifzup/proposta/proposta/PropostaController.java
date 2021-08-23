@@ -29,8 +29,11 @@ public class PropostaController {
         Proposta proposta = request.converter();
         propostaRepository.save(proposta);
 
-        //Retorna 201 com Header Location preenchido com a URL da nova proposta em caso de sucesso.
         URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
+
+        if(propostaRepository.existsByDocumento(request.getDocumento())) {
+            return ResponseEntity.unprocessableEntity().body("tua mensagem");
+        }
         return ResponseEntity.created(enderecoCadastro).build();
     }
 
