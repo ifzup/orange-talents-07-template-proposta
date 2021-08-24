@@ -38,7 +38,7 @@ public class PropostaController {
 
 
         if (propostaRepository.existsByDocumento(request.getDocumento())) {
-            return ResponseEntity.unprocessableEntity().body("tua mensagem");
+            return ResponseEntity.unprocessableEntity().body("Documento já utilizado");
         }
         propostaRepository.save(proposta);
 
