@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 public class Proposta {
@@ -77,4 +78,8 @@ public class Proposta {
         this.status = status;
     }
 
+    public static List<Proposta> listarPropostasPorStatus(Status status, PropostaRepository propostaRepository){
+
+        return propostaRepository.findByStatus(status);
+    }
 }

@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-/*
+
 
 @Entity
 public class Cartao {
@@ -15,4 +15,4 @@ public class Cartao {
 
     private String titular;
 }
-*/
+
