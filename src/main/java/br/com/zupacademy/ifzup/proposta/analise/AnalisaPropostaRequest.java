@@ -6,7 +6,7 @@ public class AnalisaPropostaRequest {
     private Long idProposta;
 
     @Deprecated
-    public AnalisaPropostaRequest() {
+    public AnalisaPropostaRequest(String documento, String nome, String s) {
     }
 
     public AnalisaPropostaRequest(String documento, String nome, Long idProposta) {

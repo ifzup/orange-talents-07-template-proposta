@@ -33,12 +33,12 @@ public class Proposta {
     @NotNull
     @Positive
     private BigDecimal salario;
-
+    
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Deprecated
-    public Proposta() {
+    public Proposta(String documento, String nome, String idProposta) {
     }
 
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
@@ -74,6 +74,7 @@ public class Proposta {
     }
 
     public void setStatus(Status status) {
-        this.status=status;
+        this.status = status;
     }
+
 }
