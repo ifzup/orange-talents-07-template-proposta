@@ -2,7 +2,6 @@ package br.com.zupacademy.ifzup.proposta.analise;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -11,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface AnalisaSolicitacaoClient {
 
     @RequestMapping(method = RequestMethod.POST, value="/api/solicitacao", consumes = "application/json")
-    AnalisaPropostaResponse consulta(AnalisaPropostaRequest request);
+    AnalisaPropostaResponse consultaFeign(AnalisaPropostaRequest request);
 }

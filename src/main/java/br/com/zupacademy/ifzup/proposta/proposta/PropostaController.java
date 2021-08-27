@@ -1,9 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaRequest;
-import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaResponse;
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaSolicitacaoClient;
-import br.com.zupacademy.ifzup.proposta.analise.Status;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +61,7 @@ public class PropostaController {
         }*/
 
         try {
-            analisaSolicitacaoClient.consulta(new AnalisaPropostaRequest(proposta.getDocumento(),
+            analisaSolicitacaoClient.consultaFeign(new AnalisaPropostaRequest(proposta.getDocumento(),
                     proposta.getNome(),
                     Long.toString(proposta.getId())));
             proposta.setStatus(NAO_ELEGIVEL);
