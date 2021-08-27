@@ -38,7 +38,7 @@ public class Proposta {
     private Status status;
 
     @Deprecated
-    public Proposta(String documento, String nome, String idProposta) {
+    public Proposta() {
     }
 
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {

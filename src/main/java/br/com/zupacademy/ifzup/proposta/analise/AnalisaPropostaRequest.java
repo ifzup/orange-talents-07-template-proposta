@@ -8,13 +8,16 @@ public class AnalisaPropostaRequest {
     private String idProposta;
 
     @Deprecated
+    public AnalisaPropostaRequest() {
+    }
+
     public AnalisaPropostaRequest(String documento, String nome, String idProposta) {
     }
 
     public AnalisaPropostaRequest(Proposta proposta) {
         this.documento = proposta.getDocumento();
         this.nome = proposta.getNome();
-        this.idProposta = getIdProposta().toString();
+        this.idProposta = proposta.getId().toString();
     }
 
     public String getDocumento() {
@@ -28,4 +31,6 @@ public class AnalisaPropostaRequest {
     public String getIdProposta() {
         return idProposta;
     }
+
+    public Long getIdPropostaLong(){return Long.valueOf(idProposta);}
 }

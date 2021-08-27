@@ -3,14 +3,20 @@ package br.com.zupacademy.ifzup.proposta.analise;
 import br.com.zupacademy.ifzup.proposta.proposta.Proposta;
 import br.com.zupacademy.ifzup.proposta.proposta.PropostaRepository;
 import br.com.zupacademy.ifzup.proposta.proposta.PropostaRequest;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static br.com.zupacademy.ifzup.proposta.analise.Status.ELEGIVEL;
+import static br.com.zupacademy.ifzup.proposta.analise.Status.NAO_ELEGIVEL;
 
 @Configuration
 @EnableScheduling
@@ -36,7 +42,16 @@ public class VerificaDocumentoScheduler {
         }
 
         for ( AnalisaPropostaRequest request : solicitacoesPendentes) {
-            analisaSolicitacaoClient.consultaFeign(request);
+            Proposta proposta = propostaRepository.findById(request.getIdPropostaLong()).get();
+            try {
+                analisaSolicitacaoClient.consultaFeign(request);
+                proposta.setStatus(ELEGIVEL);
+            }
+            catch (FeignException fe){
+                if(fe.status() == HttpStatus.UNPROCESSABLE_ENTITY.value())
+                    proposta.setStatus(NAO_ELEGIVEL);
+            }
+            propostaRepository.save(proposta);
         }
     }
 }

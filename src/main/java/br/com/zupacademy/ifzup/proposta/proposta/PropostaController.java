@@ -45,30 +45,6 @@ public class PropostaController {
         }
         propostaRepository.save(proposta);
 
-        /*
-        try{
-            AnalisaPropostaRequest analiseRequest = new AnalisaPropostaRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId());
-
-            AnalisaPropostaResponse resultadoDaConsulta = analisaSolicitacaoClient.consulta(analiseRequest);
-            Status status=resultadoDaConsulta.status();
-
-            proposta.setStatus(status);
-        }catch (FeignException.UnprocessableEntity unprocessableEntity){
-
-            proposta.setStatus(Status.NAO_ELEGIVEL);
-        }catch(FeignException.ServiceUnavailable ex){
-            propostaRepository.delete(proposta);
-        }*/
-
-        try {
-            analisaSolicitacaoClient.consultaFeign(new AnalisaPropostaRequest(proposta.getDocumento(),
-                    proposta.getNome(),
-                    Long.toString(proposta.getId())));
-            proposta.setStatus(NAO_ELEGIVEL);
-        } catch (FeignException e) {
-            //retornou 4xx ou 5xx, cliente tem restricao
-            proposta.setStatus(ELEGIVEL);
-        }
 
         URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(enderecoCadastro).build();
