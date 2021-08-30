@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 public class Cartao {
 
     @Id
-    @Column(insertable = true, updatable = true)
-    private String idCartao;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String numeroCartao;
 
     private LocalDateTime emitidoEm;
 
@@ -33,15 +35,15 @@ public class Cartao {
     private Renegociacao renegociacao;
     @Embedded
     private Vencimento vencimento;
-    @OneToOne
+    @OneToOne(mappedBy = "cartao")
     private Proposta proposta;
 
     @Deprecated
     public Cartao() {
     }
 
-    public Cartao(String idCartao, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Proposta proposta) {
-        this.idCartao = idCartao;
+    public Cartao(String numeroCartao, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Proposta proposta) {
+        this.numeroCartao = numeroCartao;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
         this.bloqueios = bloqueios;
@@ -55,7 +57,7 @@ public class Cartao {
     }
 
     public Cartao(AnalisaCartaoResponse response, Proposta proposta) {
-        this.idCartao = response.getId();
+        this.numeroCartao = response.getId();
         this.emitidoEm = response.getEmitidoEm();
         this.titular = response.getTitular();
         this.bloqueios = response.getBloqueios().stream().map(BloqueioRequest::paraBloqueio).collect(Collectors.toList());
@@ -75,8 +77,8 @@ public class Cartao {
         return manager.find(Cartao.class, id);
     }
 
-    public String getIdCartao() {
-        return idCartao;
+    public String getNumeroCartao() {
+        return numeroCartao;
     }
 
     public LocalDateTime getEmitidoEm() {

@@ -40,7 +40,8 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne(cascade=CascadeType.PERSIST)
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn
     private Cartao cartao;
 
     @Deprecated
@@ -89,6 +90,10 @@ public class Proposta {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 
     public static List<Proposta> listarPropostasPorStatus(Status status, PropostaRepository propostaRepository){
