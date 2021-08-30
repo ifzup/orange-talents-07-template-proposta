@@ -54,21 +54,21 @@ public class Cartao {
         this.proposta = proposta;
     }
 
-    public Cartao(AnalisaCartaoResponse request, Proposta proposta) {
-        this.idCartao = request.getId();
-        this.emitidoEm = request.getEmitidoEm();
-        this.titular = request.getTitular();
-        this.bloqueios = request.getBloqueios().stream().map(BloqueioRequest::paraBloqueio).collect(Collectors.toList());
-        this.avisos = request.getAvisos().stream().map(AvisoRequest::paraAviso).collect(Collectors.toList());
-        this.carteiras = request.getCarteiras().stream().map(CarteiraRequest::paraCarteira).collect(Collectors.toList());
-        this.parcelas = request.getParcelas().stream().map(ParcelaRequest::paraParcela).collect(Collectors.toList());
-        this.limite = BigDecimal.valueOf(request.getLimite());
-        if (request.getRenegociacao() == null) {
+    public Cartao(AnalisaCartaoResponse response, Proposta proposta) {
+        this.idCartao = response.getId();
+        this.emitidoEm = response.getEmitidoEm();
+        this.titular = response.getTitular();
+        this.bloqueios = response.getBloqueios().stream().map(BloqueioRequest::paraBloqueio).collect(Collectors.toList());
+        this.avisos = response.getAvisos().stream().map(AvisoRequest::paraAviso).collect(Collectors.toList());
+        this.carteiras = response.getCarteiras().stream().map(CarteiraRequest::paraCarteira).collect(Collectors.toList());
+        this.parcelas = response.getParcelas().stream().map(ParcelaRequest::paraParcela).collect(Collectors.toList());
+        this.limite = BigDecimal.valueOf(response.getLimite());
+        if (response.getRenegociacao() == null) {
             this.renegociacao = null;
         } else {
-            this.renegociacao = request.getRenegociacao().paraRenegociacao();
+            this.renegociacao = response.getRenegociacao().paraRenegociacao();
         }
-        this.vencimento = request.getVencimento().paraVencimento();
+        this.vencimento = response.getVencimento().paraVencimento();
         this.proposta = proposta;
     }
     public static Cartao procuraCartaoPorId(EntityManager manager, String id) {
@@ -119,4 +119,3 @@ public class Cartao {
         return proposta;
     }
 }
-

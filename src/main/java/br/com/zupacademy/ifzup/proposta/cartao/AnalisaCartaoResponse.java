@@ -19,16 +19,16 @@ public class AnalisaCartaoResponse {
 
 
     public AnalisaCartaoResponse(String id,
-                         LocalDateTime emitidoEm,
-                         String titular,
-                         List<BloqueioRequest> bloqueios,
-                         List<AvisoRequest> avisos,
-                         List<CarteiraRequest> carteiras,
-                         List<ParcelaRequest> parcelas,
-                         Integer limite,
-                         RenegociacaoRequest renegociacao,
-                         VencimentoRequest vencimento,
-                         String idProposta) {
+                                 LocalDateTime emitidoEm,
+                                 String titular,
+                                 List<BloqueioRequest> bloqueios,
+                                 List<AvisoRequest> avisos,
+                                 List<CarteiraRequest> carteiras,
+                                 List<ParcelaRequest> parcelas,
+                                 Integer limite,
+                                 RenegociacaoRequest renegociacao,
+                                 VencimentoRequest vencimento,
+                                 String idProposta) {
         this.id = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;

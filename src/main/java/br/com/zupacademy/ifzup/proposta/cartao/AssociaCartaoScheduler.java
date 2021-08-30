@@ -28,7 +28,6 @@ public class AssociaCartaoScheduler {
 
     @Scheduled(fixedDelay = 300000)
     public void associaCartao() {
-
         List<Proposta> propostasElegiveis = Proposta.listarPropostasPorStatus(Status.ELEGIVEL, propostaRepository);
         List<AnalisaCartaoRequest> solicitacaoDeCartao = new ArrayList<>();
         if (!propostasElegiveis.isEmpty()) {
@@ -49,21 +48,5 @@ public class AssociaCartaoScheduler {
             }
 
         }
-
-        /*for (AnalisaCartaoRequest request : solicitacaoDeCartao) {
-            try{
-                AnalisaCartaoResponse response = cartaoClient.associaCartao(request).getBody();
-                Cartao cartao = new Cartao(response, proposta);
-                proposta.setStatus();
-            }
-            catch(FeignException fe){
-                System.out.println("Log falso: Feign exception");
-            }
-        }*/
     }
 }
-//Instanciar cartão com CartaoResponse.
-//Persistir cartão.
-//Atualizar o status da proposta. Add o Status de Associado/atualizado
-//Criar um novo Status -----
-//Persistir a proposta.

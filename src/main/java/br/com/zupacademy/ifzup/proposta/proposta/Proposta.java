@@ -2,6 +2,7 @@ package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.Status;
 import br.com.zupacademy.ifzup.proposta.cartao.Cartao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -53,8 +54,16 @@ public class Proposta {
         this.endereco = endereco;
         this.salario = salario;
     }
+    public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario, Cartao cartao) {
+        this.documento = documento;
+        this.email = email;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.salario = salario;
+        this.cartao = cartao;
+    }
 
-    public Long getId() {
+        public Long getId() {
         return this.id;
     }
 
