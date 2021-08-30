@@ -36,7 +36,6 @@ public class Aviso {
         this.userAgent = userAgent;
         this.ip = ip;
     }
-
     @Deprecated
     public Aviso(){}
 }

@@ -5,6 +5,7 @@ import br.com.zupacademy.ifzup.proposta.proposta.Proposta;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,14 +23,14 @@ public class Cartao {
 
     private String titular;
 
-    @Embedded
-    private List<Bloqueio> bloqueios;
-    @Embedded
-    private List<Aviso> avisos;
-    @Embedded
-    private List<Carteira> carteiras;
-    @Embedded
-    private List<Parcela> parcelas;
+    @OneToMany(mappedBy = "cartao")
+    private List<Bloqueio> bloqueios = new ArrayList<>();
+    @OneToMany(mappedBy = "cartao")
+    private List<Aviso> avisos = new ArrayList<>();;
+    @OneToMany(mappedBy = "cartao")
+    private List<Carteira> carteiras = new ArrayList<>();;
+    @OneToMany(mappedBy = "cartao")
+    private List<Parcela> parcelas = new ArrayList<>();;
     private BigDecimal limite;
     @Embedded
     private Renegociacao renegociacao;
@@ -56,23 +57,6 @@ public class Cartao {
         this.proposta = proposta;
     }
 
-    public Cartao(AnalisaCartaoResponse response, Proposta proposta) {
-        this.numeroCartao = response.getId();
-        this.emitidoEm = response.getEmitidoEm();
-        this.titular = response.getTitular();
-        this.bloqueios = response.getBloqueios().stream().map(BloqueioRequest::paraBloqueio).collect(Collectors.toList());
-        this.avisos = response.getAvisos().stream().map(AvisoRequest::paraAviso).collect(Collectors.toList());
-        this.carteiras = response.getCarteiras().stream().map(CarteiraRequest::paraCarteira).collect(Collectors.toList());
-        this.parcelas = response.getParcelas().stream().map(ParcelaRequest::paraParcela).collect(Collectors.toList());
-        this.limite = BigDecimal.valueOf(response.getLimite());
-        if (response.getRenegociacao() == null) {
-            this.renegociacao = null;
-        } else {
-            this.renegociacao = response.getRenegociacao().paraRenegociacao();
-        }
-        this.vencimento = response.getVencimento().paraVencimento();
-        this.proposta = proposta;
-    }
     public static Cartao procuraCartaoPorId(EntityManager manager, String id) {
         return manager.find(Cartao.class, id);
     }

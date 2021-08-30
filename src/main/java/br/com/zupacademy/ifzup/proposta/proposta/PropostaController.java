@@ -1,6 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaRequest;
+import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaResponse;
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaSolicitacaoClient;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,10 @@ public class PropostaController {
         if (propostaRepository.existsByDocumento(request.getDocumento())) {
             return ResponseEntity.unprocessableEntity().body("Documento já utilizado");
         }
-        propostaRepository.save(proposta);
 
+        propostaRepository.save(proposta);
+        AnalisaPropostaResponse response = analisaSolicitacaoClient.consultaFeign(new AnalisaPropostaRequest(proposta));
+        proposta.setStatus(response.getResultatadoSolicitacao().getStatus());
 
         URI enderecoCadastro = uriBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
         return ResponseEntity.created(enderecoCadastro).build();

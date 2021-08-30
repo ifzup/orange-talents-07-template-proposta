@@ -92,12 +92,21 @@ public class Proposta {
         this.status = status;
     }
 
-    public void setCartao(Cartao cartao) {
+    public void associarCartao(Cartao cartao) {
         this.cartao = cartao;
     }
 
-    public static List<Proposta> listarPropostasPorStatus(Status status, PropostaRepository propostaRepository){
-
-        return propostaRepository.findByStatus(status);
+    @Override
+    public String toString() {
+        return "Proposta{" +
+                "id=" + id +
+                ", documento='" + documento + '\'' +
+                ", email='" + email + '\'' +
+                ", nome='" + nome + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", salario=" + salario +
+                ", status=" + status +
+                ", cartao=" + cartao +
+                '}';
     }
 }

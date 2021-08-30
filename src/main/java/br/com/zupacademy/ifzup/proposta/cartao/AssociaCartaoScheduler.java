@@ -5,7 +5,6 @@ import br.com.zupacademy.ifzup.proposta.proposta.PropostaRepository;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,21 +28,18 @@ public class AssociaCartaoScheduler {
     @Autowired
     private CartaoClient cartaoClient;
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 30000)
     public void associaCartao() {
-        List<Proposta> propostasElegiveis = propostaRepository.findByStatus(ELEGIVEL);
-                //Proposta.listarPropostasPorStatus(Status.ELEGIVEL, propostaRepository);
-        //List<AnalisaCartaoRequest> solicitacaoDeCartao = new ArrayList<>();
+        List<Proposta> propostasElegiveis = propostaRepository.findByStatusAndCartaoIsNull(ELEGIVEL);
+        propostasElegiveis.forEach(System.out::println);
         if (!propostasElegiveis.isEmpty()) {
             for (Proposta proposta : propostasElegiveis) {
 
-                AnalisaCartaoRequest request = new AnalisaCartaoRequest(proposta);
-                //solicitacaoDeCartao.add(request);
                 try{
                     AnalisaCartaoResponse response = cartaoClient.associaCartao(proposta.getId());
-                    assert response != null;
-                    Cartao cartao = new Cartao(response, proposta);
-                    proposta.setCartao(cartao);
+                    System.out.println(response.toString());
+                    Cartao cartao = response.paraCartao(proposta);
+                    proposta.associarCartao(cartao);
                     proposta.setStatus(ASSOCIADO);
                     propostaRepository.save(proposta);
                     //cartaoRepository.save(cartao);

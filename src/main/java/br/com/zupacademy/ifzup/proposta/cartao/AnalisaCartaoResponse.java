@@ -1,7 +1,11 @@
 package br.com.zupacademy.ifzup.proposta.cartao;
 
+import br.com.zupacademy.ifzup.proposta.proposta.Proposta;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnalisaCartaoResponse {
 
@@ -40,6 +44,14 @@ public class AnalisaCartaoResponse {
         this.renegociacao = renegociacao;
         this.vencimento = vencimento;
         this.idProposta = idProposta;
+    }
+
+    public Cartao paraCartao(Proposta proposta){
+        List<Bloqueio> bloqueios = this.bloqueios.stream().map(BloqueioRequest::paraBloqueio).collect(Collectors.toList());
+        List<Aviso> avisos = this.avisos.stream().map(AvisoRequest::paraAviso).collect(Collectors.toList());
+        List<Carteira> carteiras = this.carteiras.stream().map(CarteiraRequest::paraCarteira).collect(Collectors.toList());
+        List<Parcela> parcelas = this.parcelas.stream().map(ParcelaRequest::paraParcela).collect(Collectors.toList());
+        return new Cartao(id, emitidoEm, titular, bloqueios, avisos, carteiras, parcelas, new BigDecimal(limite.toString()), new Renegociacao(), new Vencimento(), proposta);
     }
 
     @Deprecated
@@ -131,5 +143,22 @@ public class AnalisaCartaoResponse {
 
     public void setIdProposta(String idProposta) {
         this.idProposta = idProposta;
+    }
+
+    @Override
+    public String toString() {
+        return "AnalisaCartaoResponse{" +
+                "id='" + id + '\'' +
+                ", emitidoEm=" + emitidoEm +
+                ", titular='" + titular + '\'' +
+                ", bloqueios=" + bloqueios +
+                ", avisos=" + avisos +
+                ", carteiras=" + carteiras +
+                ", parcelas=" + parcelas +
+                ", limite=" + limite +
+                ", renegociacao=" + renegociacao +
+                ", vencimento=" + vencimento +
+                ", idProposta='" + idProposta + '\'' +
+                '}';
     }
 }

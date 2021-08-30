@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Vencimento {
 
-    private String id;
+    private String idVencimento;
     private int dia;
     private LocalDateTime dataDeCriacaoVencimento;
 
     public Vencimento(String id, int dia, LocalDateTime dataDeCriacao) {
-        this.id = id;
+        this.idVencimento = id;
         this.dia = dia;
         this.dataDeCriacaoVencimento = dataDeCriacao;
     }
