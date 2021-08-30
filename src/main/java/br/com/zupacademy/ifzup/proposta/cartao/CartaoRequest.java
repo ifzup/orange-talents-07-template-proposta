@@ -3,7 +3,7 @@ package br.com.zupacademy.ifzup.proposta.cartao;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class AnalisaCartaoResponse {
+public class CartaoRequest {
 
     private String id;
     private LocalDateTime emitidoEm;
@@ -17,8 +17,7 @@ public class AnalisaCartaoResponse {
     private VencimentoRequest vencimento;
     private String idProposta;
 
-
-    public AnalisaCartaoResponse(String id,
+    public CartaoRequest(String id,
                          LocalDateTime emitidoEm,
                          String titular,
                          List<BloqueioRequest> bloqueios,
@@ -43,7 +42,7 @@ public class AnalisaCartaoResponse {
     }
 
     @Deprecated
-    public AnalisaCartaoResponse() { }
+    public CartaoRequest() { }
 
     public String getId() {
         return id;

@@ -1,6 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.Status;
+import br.com.zupacademy.ifzup.proposta.cartao.Cartao;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -37,6 +38,9 @@ public class Proposta {
     
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToOne(cascade=CascadeType.PERSIST)
+    private Cartao cartao;
 
     @Deprecated
     public Proposta() {
