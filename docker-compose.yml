@@ -32,6 +32,17 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: propostas
 
+  proposta-webservice:
+    image: iagofaria/propostas
+    ports:
+      - 8081:8080
+    environment:
+      URL_DATABASE: jdbc:postgresql://postgres-propostas:5432/propostas
+      DB_USER: propostas
+      DB_PASSWORD: 123
+    depends_on:
+      - postgres-propostas
+
   postgres:
     image: 'postgres:9.6-alpine'
     volumes:
@@ -134,20 +145,6 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
-#
-#  propostas-webservice:
-#    build: ./
-#    ports:
-#      - 8080:8080
-#    environment:
-#      URL_DATABASE: jdbc:postgresql://postgres-propostas:5432/propostas
-#      ANALISE_FINANCEIRA_HOST: http://analise:9999
-#      CONTAS_HOST: http://contas:8888
-#      DB_USER: propostas
-#      DB_PASSWORD: 123
-#    depends_on:
-#      - postgres-propostas
-
 
   vault:
     image: vault:1.5.3
