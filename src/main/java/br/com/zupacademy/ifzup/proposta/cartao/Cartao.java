@@ -26,11 +26,11 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao")
     private List<Bloqueio> bloqueios = new ArrayList<>();
     @OneToMany(mappedBy = "cartao")
-    private List<Aviso> avisos = new ArrayList<>();;
+    private List<Aviso> avisos = new ArrayList<>();
     @OneToMany(mappedBy = "cartao")
-    private List<Carteira> carteiras = new ArrayList<>();;
+    private List<Carteira> carteiras = new ArrayList<>();
     @OneToMany(mappedBy = "cartao")
-    private List<Parcela> parcelas = new ArrayList<>();;
+    private List<Parcela> parcelas = new ArrayList<>();
     private BigDecimal limite;
     @Embedded
     private Renegociacao renegociacao;
@@ -99,10 +99,6 @@ public class Cartao {
 
     public Vencimento getVencimento() {
         return vencimento;
-    }
-
-    public Proposta getProposta() {
-        return proposta;
     }
 
 }
