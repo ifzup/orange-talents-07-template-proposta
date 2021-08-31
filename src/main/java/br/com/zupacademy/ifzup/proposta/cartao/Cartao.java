@@ -15,7 +15,7 @@ public class Cartao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCartao;
 
     private String numeroCartao;
 
@@ -101,4 +101,7 @@ public class Cartao {
         return vencimento;
     }
 
+    public Long getIdCartao() {
+        return idCartao;
+    }
 }

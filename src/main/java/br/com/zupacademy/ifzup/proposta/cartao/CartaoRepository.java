@@ -1,7 +1,9 @@
 package br.com.zupacademy.ifzup.proposta.cartao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CartaoRepository extends CrudRepository<Cartao, Long> {
+public interface CartaoRepository extends JpaRepository<Cartao, Long> {
+
 
 }
