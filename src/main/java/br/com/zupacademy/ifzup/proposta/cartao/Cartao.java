@@ -104,4 +104,5 @@ public class Cartao {
     public Proposta getProposta() {
         return proposta;
     }
+
 }
