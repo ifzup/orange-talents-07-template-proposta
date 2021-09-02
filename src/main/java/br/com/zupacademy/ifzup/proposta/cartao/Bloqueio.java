@@ -23,12 +23,13 @@ public class Bloqueio {
     public Bloqueio() {
     }
 
-    public Bloqueio(String userAgent, String ip, Cartao cartao, boolean ativo) {
+    public Bloqueio(String userAgent, String ip, Cartao cartao, boolean ativo, String sistemaResponsavel) {
         this.bloqueadoEm = LocalDateTime.now();
         this.userAgent = userAgent;
         this.ativo = ativo;
         this.cartao = cartao;
         this.ip = ip;
+        this.sistemaResponsavel = sistemaResponsavel;
     }
 
     public Bloqueio(String userAgent, String sistemaResponsavel, boolean ativo) {

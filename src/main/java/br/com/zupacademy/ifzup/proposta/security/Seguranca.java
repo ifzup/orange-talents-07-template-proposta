@@ -1,4 +1,4 @@
-package br.com.zupacademy.ifzup.proposta.analise.security;
+package br.com.zupacademy.ifzup.proposta.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,8 +16,9 @@ public class Seguranca extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(authorizeRequests ->
             authorizeRequests
                     .antMatchers(HttpMethod.GET, "/propostas/**").hasAuthority("SCOPE_escopo-proposta")
-                    .antMatchers(HttpMethod.POST, "/propostas").hasAuthority("SCOPE_escopo-proposta")
+                    .antMatchers(HttpMethod.POST, "/propostas/*").hasAuthority("SCOPE_escopo-proposta")
                     .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("SCOPE_escopo-proposta")
+                    .antMatchers(HttpMethod.POST, "/bloqueio/**").hasAuthority("SCOPE_escopo-proposta")
                     .anyRequest().authenticated())
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }

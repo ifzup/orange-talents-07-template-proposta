@@ -30,13 +30,14 @@ public class AssociaCartaoScheduler {
 
     @Scheduled(fixedDelay = 30000)
     public void associaCartao() {
+      //  List<Proposta> propostasElegiveis = propostaRepository.findByStatus(ELEGIVEL);
         List<Proposta> propostasElegiveis = propostaRepository.findByStatusAndCartaoIsNull(ELEGIVEL);
         propostasElegiveis.forEach(System.out::println);
         if (!propostasElegiveis.isEmpty()) {
             for (Proposta proposta : propostasElegiveis) {
 
                 try{
-                    AnalisaCartaoResponse response = cartaoClient.associaCartao(proposta.getId());
+                    AnalisaCartaoResponse response = cartaoClient.associaCartao(proposta.getId()).getBody();
                     System.out.println(response.toString());
                     Cartao cartao = response.paraCartao(proposta);
                     proposta.associarCartao(cartao);

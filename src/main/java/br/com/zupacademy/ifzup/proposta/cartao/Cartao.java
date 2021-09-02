@@ -43,8 +43,8 @@ public class Cartao {
     public Cartao() {
     }
 
-    public Cartao(String numeroCartao, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Proposta proposta) {
-        this.numeroCartao = numeroCartao;
+    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Proposta proposta) {
+        this.numeroCartao = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
         this.bloqueios = bloqueios;
@@ -56,6 +56,28 @@ public class Cartao {
         this.vencimento = vencimento;
         this.proposta = proposta;
     }
+/*
+    public Cartao(CartaoRequest request, Proposta proposta) {
+        this.numeroCartao = request.getId();
+        this.emitidoEm = request.getEmitidoEm();
+        this.titular = request.getTitular();
+        this.bloqueios = request.getBloqueios()
+                .stream()
+                .map(BloqueioRequest::paraBloqueio)
+                .collect(Collectors.toList());
+        this.avisos = request.getAvisos()
+                .stream().map(AvisoRequest::paraAviso).collect(Collectors.toList());
+        this.carteiras = request.getCarteiras().stream().map(CarteiraRequest::paraCarteira).collect(Collectors.toList());
+        this.parcelas = request.getParcelas().stream().map(ParcelaRequest::paraParcela).collect(Collectors.toList());
+        this.limite = BigDecimal.valueOf(request.getLimite());
+        if (request.getRenegociacao() == null) {
+            this.renegociacao = null;
+        } else {
+            this.renegociacao = request.getRenegociacao().paraRenegociacao();
+        }
+        this.vencimento = request.getVencimento().paraVencimento();
+        this.proposta = proposta;
+    }*/
 
     public static Cartao procuraCartaoPorId(EntityManager manager, String id) {
         return manager.find(Cartao.class, id);
