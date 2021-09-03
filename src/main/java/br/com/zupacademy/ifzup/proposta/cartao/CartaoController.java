@@ -2,9 +2,11 @@ package br.com.zupacademy.ifzup.proposta.cartao;
 
 import br.com.zupacademy.ifzup.proposta.biometria.Biometria;
 import br.com.zupacademy.ifzup.proposta.biometria.BiometriaRequest;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,6 +29,8 @@ public class CartaoController {
     EntityManager manager;
     @Autowired
     CartaoRepository cartaoRepository;
+    @Autowired
+    CartaoClient cartaoClient;
 
     public final Logger logger = LoggerFactory.getLogger(CartaoController.class);
 
@@ -58,7 +62,7 @@ public class CartaoController {
     public ResponseEntity<Bloqueio> bloquearCartao(@PathVariable ("idCartao") Long idCartao){
 
         Cartao cartao = manager.find(Cartao.class, idCartao);
-        //Cartao cartao = cartaoRepository.findById(idCartao);
+        ResultadoBloqueio resultadoBloqueio = new ResultadoBloqueio();
         if(cartao==null){
             return ResponseEntity.badRequest().build();
         }
@@ -73,7 +77,19 @@ public class CartaoController {
         String ipSolicitante = request.getRemoteHost();
         String userAgent = request.getHeader("User-Agent");
 
-        Bloqueio novoBloqueio = new Bloqueio (userAgent, ipSolicitante, cartao, true, "apiPropostas");
+        SolicitacaoBloqueio solicitacaoBloqueio = new SolicitacaoBloqueio("Proposta");
+        Bloqueio novoBloqueio = new Bloqueio (userAgent, ipSolicitante, cartao, true, solicitacaoBloqueio.getSistemaResponsavel());
+
+        try {
+            resultadoBloqueio = cartaoClient.solicitaBloqueio(solicitacaoBloqueio, cartao.getNumeroCartao()).getBody();
+        } catch (FeignException e) {
+            logger.info("Feign exception");
+
+            if (e.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+                novoBloqueio.setAtivo(false);
+                logger.info("API cartao retornou FALHA.");
+            }
+        }
 
         logger.info("Bloqueando o cartão");
         manager.persist(novoBloqueio);

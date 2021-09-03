@@ -1,5 +1,6 @@
 package br.com.zupacademy.ifzup.proposta.cartao;
 
+import br.com.zupacademy.ifzup.proposta.analise.Status;
 import br.com.zupacademy.ifzup.proposta.proposta.Proposta;
 
 import javax.persistence.*;
@@ -38,6 +39,7 @@ public class Cartao {
     private Vencimento vencimento;
     @OneToOne(mappedBy = "cartao")
     private Proposta proposta;
+
 
     @Deprecated
     public Cartao() {
@@ -126,4 +128,5 @@ public class Cartao {
     public Long getIdCartao() {
         return idCartao;
     }
+    
 }
