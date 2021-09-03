@@ -128,5 +128,5 @@ public class Cartao {
     public Long getIdCartao() {
         return idCartao;
     }
-    
+
 }
