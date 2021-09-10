@@ -114,4 +114,8 @@ public class Cartao {
     public void adcionaAviso(Aviso aviso) {
         this.avisos.add(aviso);
     }
+
+    public Proposta getProposta() {
+        return proposta;
+    }
 }

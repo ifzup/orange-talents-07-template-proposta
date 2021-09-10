@@ -5,8 +5,6 @@ import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
-//revisar carteira depois
 @Entity
 public class Carteira {
 
@@ -19,6 +17,9 @@ public class Carteira {
     @ManyToOne(cascade = CascadeType.MERGE)
     Cartao cartao;
 
+    @Enumerated(EnumType.STRING)
+    private CarteiraEnum carteirasEnum;
+
     public Carteira(String id, String email, LocalDateTime associadaEm, String emissor) {
         this.id = id;
         this.email = email;
@@ -26,9 +27,11 @@ public class Carteira {
         this.emissor = emissor;
     }
 
-    public Carteira(SolicitacaoInclusaoCarteira solicitacao,
+    public Carteira(CarteiraEnum carteiraEnum,
+            SolicitacaoInclusaoCarteira solicitacao,
                     ResultadoCarteira resultado,
                     Cartao cartao) {
+        this.carteirasEnum = carteiraEnum;
         this.id = resultado.getId();
         this.emissor = solicitacao.getCarteira();
         this.associadaEm = LocalDateTime.now();

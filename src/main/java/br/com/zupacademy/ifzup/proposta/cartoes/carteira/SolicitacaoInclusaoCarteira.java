@@ -11,4 +11,9 @@ public class SolicitacaoInclusaoCarteira {
     public String getCarteira() {
         return carteira;
     }
+
+    public SolicitacaoInclusaoCarteira(String email, String carteira) {
+        this.email = email;
+        this.carteira = carteira;
+    }
 }

@@ -5,15 +5,17 @@ import javax.persistence.Enumerated;
 
 public class ResultadoCarteira {
     @Enumerated(EnumType.STRING)
-    ResultadoCarteira resultado;
+    ResultadoCarteiraEnum resultado;
     String id;
 
-    public ResultadoCarteira getResultado() {
-        return resultado;
-    }
+
 
     public String getResultadoString() {
         return resultado.toString();
+    }
+
+    public ResultadoCarteiraEnum getResultado() {
+        return resultado;
     }
 
     public String getId() {

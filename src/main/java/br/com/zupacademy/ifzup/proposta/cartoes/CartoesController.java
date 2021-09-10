@@ -11,6 +11,9 @@ import br.com.zupacademy.ifzup.proposta.cartoes.bloqueio.ResultadoBloqueio;
 import br.com.zupacademy.ifzup.proposta.cartoes.bloqueio.SolicitacaoBloqueio;
 import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 import br.com.zupacademy.ifzup.proposta.cartoes.cartao.CartaoRepository;
+import br.com.zupacademy.ifzup.proposta.cartoes.carteira.Carteira;
+import br.com.zupacademy.ifzup.proposta.cartoes.carteira.ResultadoCarteira;
+import br.com.zupacademy.ifzup.proposta.cartoes.carteira.SolicitacaoInclusaoCarteira;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static br.com.zupacademy.ifzup.proposta.cartoes.carteira.CarteiraEnum.PAYPAL;
 
 
 @RestController
@@ -120,7 +125,6 @@ public class CartoesController {
         String userAgent = request.getHeader("User-Agent");
 
         if (cartao == null) {
-            System.out.println("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO AQUIII");
             logger.info("Cartão não encontrado");
             return ResponseEntity.notFound().build();
         }
@@ -129,7 +133,6 @@ public class CartoesController {
             Aviso aviso = new Aviso(avisoRequest, cartao, userAgent, ipSolicitante);
             manager.persist(aviso);
         } catch (FeignException fe) {
-            System.out.println(resultado);
             logger.info("Feign exception");
 
             if (fe.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
@@ -141,6 +144,46 @@ public class CartoesController {
             logger.info("Retornou FALHA");
         }
 
+        return ResponseEntity.ok().body(resultado);
+    }
+
+    @Transactional
+    @PostMapping("/{numeroCartao}/paypal")
+    public ResponseEntity<ResultadoCarteira> resgistrarPaypal(@PathVariable("numeroCartao") String numeroCartao, @RequestBody SolicitacaoInclusaoCarteira carteiraRequest, UriComponentsBuilder uriBuilder) {
+        ResultadoCarteira resultado = new ResultadoCarteira();
+
+
+        Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+/*
+        String ipSolicitante = request.getRemoteHost();
+        String userAgent = request.getHeader("User-Agent");
+*/
+
+        if (cartao == null) {
+            logger.info("Cartão não encontrado");
+            return ResponseEntity.notFound().build();
+        }
+
+        //if(cartao
+
+        try {
+            resultado = cartoesClient.associaCarteira(carteiraRequest, numeroCartao).getBody();
+        } catch (FeignException fe) {
+            logger.info("Feign exception");
+
+            if (fe.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+                assert resultado != null;
+                if (resultado.equals("FALHA")) {
+                    return ResponseEntity.badRequest().body(resultado);
+                }
+            }
+            logger.info("Retornou FALHA");
+        }
+
+        Carteira carteira = new Carteira(PAYPAL, carteiraRequest, resultado, cartao);
+        manager.persist(carteira);
+
+        URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
         return ResponseEntity.ok().body(resultado);
     }
 }
