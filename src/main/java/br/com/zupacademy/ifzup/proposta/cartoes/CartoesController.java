@@ -176,7 +176,6 @@ public class CartoesController {
             logger.info("Retornou FALHA");
         }
 
-        //Carteira carteirateste = carteiraRepository.findByCarteirasEnum(PAYPAL);
         Carteira carteirateste = carteiraRepository.findByCartaoIdCartaoAndCarteirasEnum(cartao.getIdCartao(), PAYPAL);
 
         if(!(carteirateste==null)) {
@@ -225,7 +224,6 @@ public class CartoesController {
             logger.info("Retornou FALHA");
         }
 
-        //Carteira carteirateste = carteiraRepository.findByCarteirasEnum(PAYPAL);
         Carteira carteirateste = carteiraRepository.findByCartaoIdCartaoAndCarteirasEnum(cartao.getIdCartao(), SAMSUNG_PAY);
 
         if(!(carteirateste==null)) {
