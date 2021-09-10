@@ -39,7 +39,7 @@ public class PropostaRequest {
 
 
     public Proposta converter() {
-        return new Proposta(documento, email, nome, endereco, salario);
+        return new Proposta(new DocumentoCriptografado(documento), email, nome, endereco, salario);
     }
 
     public String getDocumento() {

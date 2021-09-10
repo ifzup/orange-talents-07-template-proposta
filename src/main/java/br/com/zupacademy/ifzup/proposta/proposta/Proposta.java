@@ -46,16 +46,16 @@ public class Proposta {
     public Proposta() {
     }
 
-    public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
-        this.documento = documento;
+    public Proposta(DocumentoCriptografado documento, String email, String nome, String endereco, BigDecimal salario) {
+        this.documento = documento.hash();
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
     }
 
-    public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario, Cartao cartao) {
-        this.documento = documento;
+    public Proposta(DocumentoCriptografado documento, String email, String nome, String endereco, BigDecimal salario, Cartao cartao) {
+        this.documento = documento.hash();
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
