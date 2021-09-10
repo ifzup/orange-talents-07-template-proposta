@@ -7,11 +7,11 @@ public enum ResultadoSolicitacao {
 
     private final Status status;
 
-    ResultadoSolicitacao(Status status){
-        this.status=status;
+    ResultadoSolicitacao(Status status) {
+        this.status = status;
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return status;
     }
 }

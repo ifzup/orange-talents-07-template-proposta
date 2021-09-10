@@ -1,20 +1,24 @@
-package br.com.zupacademy.ifzup.proposta.analise;
+package br.com.zupacademy.ifzup.proposta.cartoes.cartao;
 
 import br.com.zupacademy.ifzup.proposta.proposta.Proposta;
 
-public class AnalisaPropostaRequest {
+public class AnalisaCartaoRequest {
+
     private String documento;
     private String nome;
     private String idProposta;
 
     @Deprecated
-    public AnalisaPropostaRequest() {
+    public AnalisaCartaoRequest() {
     }
 
-    public AnalisaPropostaRequest(String documento, String nome, String idProposta) {
+    public AnalisaCartaoRequest(String documento, String nome, String idProposta) {
+        this.documento = documento;
+        this.nome = nome;
+        this.idProposta = idProposta;
     }
 
-    public AnalisaPropostaRequest(Proposta proposta) {
+    public AnalisaCartaoRequest(Proposta proposta) {
         this.documento = proposta.getDocumento();
         this.nome = proposta.getNome();
         this.idProposta = proposta.getId().toString();
@@ -30,9 +34,5 @@ public class AnalisaPropostaRequest {
 
     public String getIdProposta() {
         return idProposta;
-    }
-
-    public Long getIdPropostaLong() {
-        return Long.valueOf(idProposta);
     }
 }

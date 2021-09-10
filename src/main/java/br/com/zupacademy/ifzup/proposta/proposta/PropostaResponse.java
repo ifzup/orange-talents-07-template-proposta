@@ -1,10 +1,9 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.Status;
-import br.com.zupacademy.ifzup.proposta.cartao.Cartao;
+import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public class PropostaResponse {
 

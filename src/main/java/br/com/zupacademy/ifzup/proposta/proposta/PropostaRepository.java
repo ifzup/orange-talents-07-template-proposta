@@ -2,7 +2,6 @@ package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

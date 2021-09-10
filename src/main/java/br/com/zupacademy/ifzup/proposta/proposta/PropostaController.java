@@ -3,7 +3,6 @@ package br.com.zupacademy.ifzup.proposta.proposta;
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaRequest;
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaPropostaResponse;
 import br.com.zupacademy.ifzup.proposta.analise.AnalisaSolicitacaoClient;
-import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +16,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-
-import static br.com.zupacademy.ifzup.proposta.analise.Status.ELEGIVEL;
-import static br.com.zupacademy.ifzup.proposta.analise.Status.NAO_ELEGIVEL;
 
 @RestController
 @RequestMapping("/api/propostas")

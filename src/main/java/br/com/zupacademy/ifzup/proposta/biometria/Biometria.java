@@ -1,6 +1,6 @@
 package br.com.zupacademy.ifzup.proposta.biometria;
 
-import br.com.zupacademy.ifzup.proposta.cartao.Cartao;
+import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

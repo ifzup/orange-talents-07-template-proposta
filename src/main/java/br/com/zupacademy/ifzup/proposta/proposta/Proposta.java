@@ -1,8 +1,7 @@
 package br.com.zupacademy.ifzup.proposta.proposta;
 
 import br.com.zupacademy.ifzup.proposta.analise.Status;
-import br.com.zupacademy.ifzup.proposta.cartao.Cartao;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 public class Proposta {
@@ -36,11 +34,11 @@ public class Proposta {
     @NotNull
     @Positive
     private BigDecimal salario;
-    
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Cartao cartao;
 
@@ -55,6 +53,7 @@ public class Proposta {
         this.endereco = endereco;
         this.salario = salario;
     }
+
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario, Cartao cartao) {
         this.documento = documento;
         this.email = email;
@@ -64,7 +63,7 @@ public class Proposta {
         this.cartao = cartao;
     }
 
-        public Long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -99,6 +98,7 @@ public class Proposta {
     public Status getStatus() {
         return status;
     }
+
     public Cartao getCartao() {
         return cartao;
     }

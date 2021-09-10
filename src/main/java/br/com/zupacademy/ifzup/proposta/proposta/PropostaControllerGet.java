@@ -17,10 +17,10 @@ public class PropostaControllerGet {
     EntityManager manager;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PropostaResponse> listarPorId(@PathVariable("id") Long id){
+    public ResponseEntity<PropostaResponse> listarPorId(@PathVariable("id") Long id) {
         Proposta proposta = manager.find(Proposta.class, id);
 
-        if(proposta == null){
+        if (proposta == null) {
             return ResponseEntity.notFound().build();
         }
         PropostaResponse propostaEncontrada = new PropostaResponse(proposta);

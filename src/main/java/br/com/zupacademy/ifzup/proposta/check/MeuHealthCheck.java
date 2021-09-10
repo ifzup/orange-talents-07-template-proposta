@@ -17,7 +17,7 @@ public class MeuHealthCheck implements HealthIndicator {
     }
 
     @Override
-    public Health health(){
+    public Health health() {
         Map<String, Object> details = new HashMap<>();
         details.put("versão", "1.2.3");
         details.put("descrição", "Meu primeiro Health Check customizado!");

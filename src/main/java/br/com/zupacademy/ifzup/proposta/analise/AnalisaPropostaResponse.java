@@ -30,7 +30,7 @@ public class AnalisaPropostaResponse {
         return resultadoSolicitacao;
     }
 
-    public Status status(){
+    public Status status() {
         return resultadoSolicitacao.getStatus();
     }
 }
