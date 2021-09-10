@@ -6,5 +6,5 @@ public interface CarteiraRepository extends JpaRepository<Carteira, String> {
 
     /*Carteira findByCarteirasEnum(CarteiraEnum paypal);*/
 
-    Carteira findByCartaoIdCartao(Long idCartao);
+    Carteira findByCartaoIdCartaoAndCarteirasEnum(Long idCartao, CarteiraEnum paypal);
 }

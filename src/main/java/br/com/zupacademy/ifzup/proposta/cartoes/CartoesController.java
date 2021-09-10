@@ -176,7 +176,7 @@ public class CartoesController {
         }
 
         //Carteira carteirateste = carteiraRepository.findByCarteirasEnum(PAYPAL);
-        Carteira carteirateste = carteiraRepository.findByCartaoIdCartao(cartao.getIdCartao());
+        Carteira carteirateste = carteiraRepository.findByCartaoIdCartaoAndCarteirasEnum(cartao.getIdCartao(), PAYPAL);
 
         if(!(carteirateste==null)) {
             return ResponseEntity.unprocessableEntity().build();
