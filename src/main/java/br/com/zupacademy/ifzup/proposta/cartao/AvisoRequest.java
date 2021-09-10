@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class AvisoRequest {
     @NotNull
     @Future
-    private LocalDate validoAte; //validoAte é término da viagem
+    private LocalDate validoAte;
     @NotBlank
     private String destino;
 
@@ -17,9 +17,11 @@ public class AvisoRequest {
         this.destino = destino;
     }
 
-    public Aviso paraAviso() {
+
+    public Aviso paraAviso(){
         return new Aviso(this.validoAte, this.destino);
     }
+
     public LocalDate getValidoAte() {
         return validoAte;
     }

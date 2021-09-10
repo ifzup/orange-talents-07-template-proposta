@@ -3,6 +3,8 @@ package br.com.zupacademy.ifzup.proposta.cartao;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
+//revisar carteira depois
 @Entity
 public class Carteira {
 

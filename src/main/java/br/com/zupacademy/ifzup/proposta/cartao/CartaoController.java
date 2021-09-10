@@ -6,9 +6,11 @@ import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityManager;
@@ -31,6 +33,8 @@ public class CartaoController {
     CartaoRepository cartaoRepository;
     @Autowired
     CartaoClient cartaoClient;
+    @Autowired
+    AvisoViagemRepository  avisoViagemRepository;
 
     public final Logger logger = LoggerFactory.getLogger(CartaoController.class);
 
@@ -95,5 +99,72 @@ public class CartaoController {
         manager.persist(novoBloqueio);
 
         return ResponseEntity.ok().build();
+    }
+/*
+
+    @PostMapping("/{id}/avisos")
+    public ResponseEntity<?> noficaViagem(@PathVariable("id") long id, @RequestBody @Valid AvisoRequest notificaRequest,
+                                          @RequestHeader HttpHeaders headers, HttpServletRequest httpRequest){
+
+        Cartao cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
+
+        String ipCliente = httpRequest.getRemoteAddr();
+        String userAgent = headers.get(HttpHeaders.USER_AGENT).get(0);
+
+        AvisoViagemRequest avisoViagemRequest = new AvisoViagemRequest(notificaRequest.getDestino(), notificaRequest.getValidoAte());
+        AvisoViagemResponse avisoViagemResponse = cartaoClient.notificacaoViagem(cartao.getNumeroCartao(), avisoViagemRequest);
+
+        if(avisoViagemResponse.getResultado().equals("CRIADO")){
+            Aviso aviso = notificaRequest.toModel(ipCliente, userAgent, cartao);
+            cartao.adcionaAviso(aviso);
+            avisoViagemRepository.save(aviso);
+            return ResponseEntity.ok().build();
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Houve um erro ao notificar o sistema bancário");
+    }
+
+*/
+
+
+    @Transactional
+    @PostMapping("/{numeroCartao}/avisos")
+    public ResponseEntity<AvisoViagemResult> resgistrarAvisoViagem(@PathVariable("numeroCartao") String numeroCartao, @RequestBody AvisoRequest avisoRequest){
+        AvisoViagemResult resultado = new AvisoViagemResult();
+
+
+        Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+
+        String ipSolicitante = request.getRemoteHost();
+        String userAgent = request.getHeader("User-Agent");
+
+        if(cartao == null){
+            System.out.println("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO AQUIII");
+            logger.info("Cartão não encontrado");
+            return ResponseEntity.notFound().build();
+        }
+        try{
+            resultado = cartaoClient.solicitarAviso(avisoRequest, numeroCartao).getBody();
+            Aviso aviso = new Aviso(avisoRequest, cartao, userAgent, ipSolicitante);
+            manager.persist(aviso);
+        } catch(FeignException fe){
+            System.out.println(resultado);
+            logger.info("Feign exception");
+
+            if(fe.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+                assert resultado != null;
+                if (resultado.equals("FALHA")) {
+                    return ResponseEntity.badRequest().body(resultado);
+                }
+            }
+            logger.info("Retornou FALHA");
+        }
+
+
+
+
+
+        return ResponseEntity.ok().body(resultado);
     }
 }
