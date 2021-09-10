@@ -11,9 +11,7 @@ import br.com.zupacademy.ifzup.proposta.cartoes.bloqueio.ResultadoBloqueio;
 import br.com.zupacademy.ifzup.proposta.cartoes.bloqueio.SolicitacaoBloqueio;
 import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 import br.com.zupacademy.ifzup.proposta.cartoes.cartao.CartaoRepository;
-import br.com.zupacademy.ifzup.proposta.cartoes.carteira.Carteira;
-import br.com.zupacademy.ifzup.proposta.cartoes.carteira.ResultadoCarteira;
-import br.com.zupacademy.ifzup.proposta.cartoes.carteira.SolicitacaoInclusaoCarteira;
+import br.com.zupacademy.ifzup.proposta.cartoes.carteira.*;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +43,12 @@ public class CartoesController {
     CartaoRepository cartaoRepository;
     @Autowired
     CartoesClient cartoesClient;
+
     @Autowired
     AvisoViagemRepository avisoViagemRepository;
+
+    @Autowired
+    CarteiraRepository carteiraRepository;
 
     public final Logger logger = LoggerFactory.getLogger(CartoesController.class);
 
@@ -58,7 +60,6 @@ public class CartoesController {
     public ResponseEntity<Biometria> cadastrarBiometria(@PathVariable("id") Long id, @RequestBody @Valid BiometriaRequest request, UriComponentsBuilder uriBuilder) {
 
         Cartao cartao = manager.find(Cartao.class, id);
-        // Optional<Cartao> cartao = cartaoRepository.findById(id);
         if (cartao == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -154,17 +155,11 @@ public class CartoesController {
 
 
         Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
-/*
-        String ipSolicitante = request.getRemoteHost();
-        String userAgent = request.getHeader("User-Agent");
-*/
 
         if (cartao == null) {
             logger.info("Cartão não encontrado");
             return ResponseEntity.notFound().build();
         }
-
-        //if(cartao
 
         try {
             resultado = cartoesClient.associaCarteira(carteiraRequest, numeroCartao).getBody();
@@ -180,10 +175,17 @@ public class CartoesController {
             logger.info("Retornou FALHA");
         }
 
-        Carteira carteira = new Carteira(PAYPAL, carteiraRequest, resultado, cartao);
-        manager.persist(carteira);
+        //Carteira carteirateste = carteiraRepository.findByCarteirasEnum(PAYPAL);
+        Carteira carteirateste = carteiraRepository.findByCartaoIdCartao(cartao.getIdCartao());
 
-        URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
-        return ResponseEntity.ok().body(resultado);
+        if(!(carteirateste==null)) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+            Carteira carteira = new Carteira(PAYPAL, carteiraRequest, resultado, cartao);
+            manager.persist(carteira);
+            URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
+            return ResponseEntity.ok().body(resultado);
+
     }
 }

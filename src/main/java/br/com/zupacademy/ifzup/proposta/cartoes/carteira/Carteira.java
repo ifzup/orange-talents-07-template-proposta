@@ -40,6 +40,10 @@ public class Carteira {
 
     }
 
+    @Deprecated
+    public Carteira() {
+    }
+
     public String getId() {
         return id;
     }
