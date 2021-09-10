@@ -30,6 +30,7 @@ import java.net.URI;
 import java.util.List;
 
 import static br.com.zupacademy.ifzup.proposta.cartoes.carteira.CarteiraEnum.PAYPAL;
+import static br.com.zupacademy.ifzup.proposta.cartoes.carteira.CarteiraEnum.SAMSUNG_PAY;
 
 
 @RestController
@@ -183,6 +184,55 @@ public class CartoesController {
         }
         try {
             Carteira carteira = new Carteira(PAYPAL, carteiraRequest, resultado, cartao);
+            manager.persist(carteira);
+            URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
+
+            return ResponseEntity.created(location).build();
+            //return ResponseEntity.ok().body(resultado);
+        }catch(Exception e){
+            logger.info("Violou alguma restrição");
+            return ResponseEntity.badRequest().build();
+        }
+
+
+    }
+
+
+    @Transactional
+    @PostMapping("/{numeroCartao}/samsung")
+    public ResponseEntity<ResultadoCarteira> resgistrarSamsung(@PathVariable("numeroCartao") String numeroCartao, @RequestBody SolicitacaoInclusaoCarteira carteiraRequest, UriComponentsBuilder uriBuilder) {
+        ResultadoCarteira resultado = new ResultadoCarteira();
+
+
+        Cartao cartao = cartaoRepository.findByNumeroCartao(numeroCartao);
+
+        if (cartao == null) {
+            logger.info("Cartão não encontrado");
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            resultado = cartoesClient.associaCarteira(carteiraRequest, numeroCartao).getBody();
+        } catch (FeignException fe) {
+            logger.info("Feign exception");
+
+            if (fe.status() == HttpStatus.UNPROCESSABLE_ENTITY.value()) {
+                assert resultado != null;
+                if (resultado.equals("FALHA")) {
+                    return ResponseEntity.badRequest().body(resultado);
+                }
+            }
+            logger.info("Retornou FALHA");
+        }
+
+        //Carteira carteirateste = carteiraRepository.findByCarteirasEnum(PAYPAL);
+        Carteira carteirateste = carteiraRepository.findByCartaoIdCartaoAndCarteirasEnum(cartao.getIdCartao(), SAMSUNG_PAY);
+
+        if(!(carteirateste==null)) {
+            return ResponseEntity.unprocessableEntity().build();
+        }
+        try {
+            Carteira carteira = new Carteira(SAMSUNG_PAY, carteiraRequest, resultado, cartao);
             manager.persist(carteira);
             URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
 
