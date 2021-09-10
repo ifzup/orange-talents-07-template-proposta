@@ -181,11 +181,16 @@ public class CartoesController {
         if(!(carteirateste==null)) {
             return ResponseEntity.unprocessableEntity().build();
         }
-
+        try {
             Carteira carteira = new Carteira(PAYPAL, carteiraRequest, resultado, cartao);
             manager.persist(carteira);
             URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
             return ResponseEntity.ok().body(resultado);
+        }catch(Exception e){
+            logger.info("Violou alguma restrição");
+            return ResponseEntity.badRequest().build();
+        }
+
 
     }
 }
