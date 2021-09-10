@@ -187,7 +187,6 @@ public class CartoesController {
             URI location = uriBuilder.path("/{idCartao}/carteiras/{id}").buildAndExpand(cartao, carteira.getId()).toUri();
 
             return ResponseEntity.created(location).build();
-
             //return ResponseEntity.ok().body(resultado);
         }catch(Exception e){
             logger.info("Violou alguma restrição");
