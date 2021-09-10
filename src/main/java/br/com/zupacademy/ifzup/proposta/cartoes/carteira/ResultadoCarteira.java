@@ -10,9 +10,9 @@ public class ResultadoCarteira {
 
 
 
-    public String getResultadoString() {
+   /* public String getResultadoString() {
         return resultado.toString();
-    }
+    }*/
 
     public ResultadoCarteiraEnum getResultado() {
         return resultado;
