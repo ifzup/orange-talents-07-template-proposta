@@ -3,6 +3,7 @@ package br.com.zupacademy.ifzup.proposta.cartoes.carteira;
 import br.com.zupacademy.ifzup.proposta.cartoes.cartao.Cartao;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,6 +11,7 @@ public class Carteira {
 
     @Id
     private String id;
+    @NotBlank
     private String email;
     private LocalDateTime associadaEm;
     @Column(unique = true)
