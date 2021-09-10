@@ -82,8 +82,8 @@ public class CartaoController {
         String userAgent = request.getHeader("User-Agent");
 
         SolicitacaoBloqueio solicitacaoBloqueio = new SolicitacaoBloqueio("Proposta");
-        Bloqueio novoBloqueio = new Bloqueio (userAgent, ipSolicitante, cartao, true, solicitacaoBloqueio.getSistemaResponsavel());
 
+        Bloqueio novoBloqueio = new Bloqueio (userAgent, ipSolicitante, cartao, true, solicitacaoBloqueio.getSistemaResponsavel());
         try {
             resultadoBloqueio = cartaoClient.solicitaBloqueio(solicitacaoBloqueio, cartao.getNumeroCartao()).getBody();
         } catch (FeignException e) {
@@ -100,33 +100,6 @@ public class CartaoController {
 
         return ResponseEntity.ok().build();
     }
-/*
-
-    @PostMapping("/{id}/avisos")
-    public ResponseEntity<?> noficaViagem(@PathVariable("id") long id, @RequestBody @Valid AvisoRequest notificaRequest,
-                                          @RequestHeader HttpHeaders headers, HttpServletRequest httpRequest){
-
-        Cartao cartao = cartaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
-
-        String ipCliente = httpRequest.getRemoteAddr();
-        String userAgent = headers.get(HttpHeaders.USER_AGENT).get(0);
-
-        AvisoViagemRequest avisoViagemRequest = new AvisoViagemRequest(notificaRequest.getDestino(), notificaRequest.getValidoAte());
-        AvisoViagemResponse avisoViagemResponse = cartaoClient.notificacaoViagem(cartao.getNumeroCartao(), avisoViagemRequest);
-
-        if(avisoViagemResponse.getResultado().equals("CRIADO")){
-            Aviso aviso = notificaRequest.toModel(ipCliente, userAgent, cartao);
-            cartao.adcionaAviso(aviso);
-            avisoViagemRepository.save(aviso);
-            return ResponseEntity.ok().build();
-        }
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Houve um erro ao notificar o sistema bancário");
-    }
-
-*/
-
 
     @Transactional
     @PostMapping("/{numeroCartao}/avisos")
